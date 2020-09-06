@@ -1,4 +1,4 @@
-# Anestech Tasks
+# React Tasks
 
 A fullstack application to manage time spent on tasks.
 
