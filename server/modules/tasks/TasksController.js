@@ -20,6 +20,14 @@ class TasksController {
       res.status(400).json({ message: error.message });
     }
   }
+
+  async update(req, res) {
+    try {
+      res.json(await TasksService.update(req.params.id, req.body));
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
 }
 
 module.exports = new TasksController();

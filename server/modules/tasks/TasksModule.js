@@ -8,6 +8,7 @@ class TasksModule extends Module {
     this.addRoute("get", "/api/v1/tasks", TasksController.getAll);
     this.addRoute("get", "/api/v1/tasks/:id", TasksController.getOne);
     this.addRoute("post", "/api/v1/tasks", TasksController.create);
+    this.addRoute("patch", "/api/v1/tasks/:id", TasksController.update);
   }
 }
 

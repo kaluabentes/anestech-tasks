@@ -31,6 +31,15 @@ class TasksService {
       endDate: body.endDate ? new Date(body.endDate) : null,
     });
   }
+
+  async update(id, body) {
+    const task = await Task.findById(id);
+    task.description = body.description || task.description;
+    task.user = body.user || task.user;
+    task.startDate = body.startDate ? new Date(body.startDate) : task.startDate;
+    task.endDate = body.endDate ? new Date(body.endDate) : task.endDate;
+    return task.save();
+  }
 }
 
 module.exports = new TasksService();
