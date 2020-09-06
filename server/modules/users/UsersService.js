@@ -24,6 +24,11 @@ class UsersService {
       throw new Error(error.message);
     }
 
+    const emailExists = await User.find({ email: body.email });
+    if (emailExists) {
+      throw new Error("Email already in use");
+    }
+
     return User.create({
       name: body.name,
       email: body.email,
