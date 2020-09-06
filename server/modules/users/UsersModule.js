@@ -2,8 +2,8 @@ const Module = require("../../core/Module");
 const UsersController = require("./UsersController");
 
 class UsersModule extends Module {
-  constructor() {
-    super();
+  constructor(options) {
+    super(options);
 
     this.addRoute("get", "/api/v1/users", UsersController.getAll);
     this.addRoute("get", "/api/v1/users/:id", UsersController.getOne);
