@@ -1,11 +1,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const helmet = require("helmet");
+const cors = require("cors");
 
 class App {
   constructor(env) {
     this.server = express();
     this.server.use(helmet());
+    this.server.use(cors());
     this.server.use(express.json());
     this.env = env;
   }
