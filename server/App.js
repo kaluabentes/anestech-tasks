@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 class App {
   constructor(env) {
     this.server = express();
+    this.server.use(express.json());
     this.env = env;
   }
 
@@ -13,6 +14,11 @@ class App {
 
   configDatabase() {
     mongoose.connect(this.env.DB_CONNECTION, {
+      auth: {
+        authSource: "admin",
+      },
+      user: this.env.DB_USER,
+      pass: this.env.DB_PASS,
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
