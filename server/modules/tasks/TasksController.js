@@ -32,6 +32,14 @@ class TasksController {
       res.status(500).json({ message: error.message });
     }
   }
+
+  async delete(req, res) {
+    try {
+      res.json(await TasksService.delete(req.params.id));
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
 }
 
 module.exports = new TasksController();

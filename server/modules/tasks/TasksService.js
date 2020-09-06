@@ -40,6 +40,10 @@ class TasksService {
     task.endDate = body.endDate ? new Date(body.endDate) : task.endDate;
     return task.save();
   }
+
+  delete(id) {
+    return Task.deleteOne({ _id: id });
+  }
 }
 
 module.exports = new TasksService();
