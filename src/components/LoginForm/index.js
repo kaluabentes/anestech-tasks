@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useState, useRef } from "react";
 import PropTypes from "prop-types";
 
 import Input from "../Input";
@@ -7,22 +7,14 @@ import { Form, Logo } from "./styles";
 import logo from "../../images/logo.svg";
 
 const propTypes = {
-  email: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired,
-  onEmailChange: PropTypes.func.isRequired,
-  onPasswordChange: PropTypes.func.isRequired,
+  error: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
 };
 
-export default function LoginForm({
-  email,
-  password,
-  onEmailChange,
-  onPasswordChange,
-  onSubmit,
-  isLoading,
-}) {
+export default function LoginForm({ onSubmit, isLoading }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const formRef = useRef();
 
   function handleSubmit() {
@@ -33,7 +25,7 @@ export default function LoginForm({
       return;
     }
 
-    onSubmit();
+    onSubmit({ email, password });
   }
 
   return (
@@ -43,7 +35,7 @@ export default function LoginForm({
         placeholder="E-mail"
         type="email"
         value={email}
-        onChange={onEmailChange}
+        onChange={(event) => setEmail(event.target.value)}
         required
         margin="0 0 15px 0"
       />
@@ -51,7 +43,7 @@ export default function LoginForm({
         placeholder="Password"
         type="password"
         value={password}
-        onChange={onPasswordChange}
+        onChange={(event) => setPassword(event.target.value)}
         required
         margin="0 0 15px 0"
       />
