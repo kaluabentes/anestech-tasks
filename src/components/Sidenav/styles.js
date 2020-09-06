@@ -30,7 +30,7 @@ export const Button = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
 
   &:last-of-type {
     margin-bottom: 0;
