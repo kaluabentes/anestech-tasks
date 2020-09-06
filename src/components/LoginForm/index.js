@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import Input from "../Input";
 import Button from "../Button";
-import { Form, Logo } from "./styles";
+import { Form, Logo, Title } from "./styles";
 import logo from "../../images/logo.svg";
 
 const propTypes = {
@@ -31,6 +31,7 @@ export default function LoginForm({ onSubmit, isLoading }) {
   return (
     <Form ref={formRef}>
       <Logo src={logo} alt="React Tasks" />
+      <Title>Login</Title>
       <Input
         placeholder="E-mail"
         type="email"
