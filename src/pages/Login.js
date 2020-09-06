@@ -9,7 +9,7 @@ import { useUser } from "../contexts/user";
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
-  const [, dispatch] = useUser();
+  const [user, dispatch] = useUser();
   const history = useHistory();
 
   async function login(body) {
@@ -18,7 +18,7 @@ export default function Login() {
     try {
       const { data } = await AuthApi.login(body);
 
-      dispatch({ token: data.token });
+      dispatch({ token: data.token, email: data.email });
       history.push("/");
     } catch (error) {
       setIsLoading(false);
@@ -31,7 +31,11 @@ export default function Login() {
       <Helmet>
         <title>Login - React Tasks</title>
       </Helmet>
-      <LoginForm isLoading={isLoading} onSubmit={login} />
+      <LoginForm
+        initialEmail={user.email}
+        isLoading={isLoading}
+        onSubmit={login}
+      />
     </AuthLayout>
   );
 }
