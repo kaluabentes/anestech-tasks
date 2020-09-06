@@ -4,6 +4,13 @@ A fullstack application to manage time spent on tasks.
 
 ## How to run
 
+### Preparation
+
+1. Copy `.env.example` to `.env`
+2. Run `docker-compose up`
+
+### Available commands
+
 - Run `yarn dev:server` to start backend development server
 - Run `yarn dev:client` to start frontend development server
 - Run `yarn start:server` to start backend production server
