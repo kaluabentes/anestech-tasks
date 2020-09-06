@@ -1,7 +1,11 @@
+const UserService = require("./UserService");
+
 class UsersController {
-  getAll(req, res) {
-    res.json({ message: "ok" });
+  async getAll(req, res) {
+    res.json(await UserService.getAll());
   }
+
+  getOne(req, res) {}
 }
 
 module.exports = new UsersController();
