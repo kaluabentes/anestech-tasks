@@ -1,9 +1,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const helmet = require("helmet");
 
 class App {
   constructor(env) {
     this.server = express();
+    this.server.use(helmet());
     this.server.use(express.json());
     this.env = env;
   }
