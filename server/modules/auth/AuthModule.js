@@ -6,6 +6,7 @@ class AuthModule extends Module {
     super(options);
 
     this.addRoute("post", "/api/v1/auth/login", AuthController.login);
+    this.addRoute("post", "/api/v1/auth/register", AuthController.register);
   }
 }
 

@@ -2,6 +2,7 @@ const Joi = require("joi");
 const User = require("../users/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const UsersService = require("../users/UsersService");
 
 require("dotenv").config();
 
@@ -33,6 +34,10 @@ class AuthService {
     return {
       token: await jwt.sign(payload, process.env.JWT_SECRET),
     };
+  }
+
+  register(body) {
+    return UsersService.create(body);
   }
 }
 

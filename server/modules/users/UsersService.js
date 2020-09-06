@@ -23,11 +23,7 @@ class UsersService {
       password: Joi.string().required(),
     });
 
-    try {
-      await schema.validateAsync(body);
-    } catch (error) {
-      throw new Error(error.message);
-    }
+    await schema.validateAsync(body);
 
     if (await this.emailExists(body.email)) {
       throw new Error("Email already in use");
