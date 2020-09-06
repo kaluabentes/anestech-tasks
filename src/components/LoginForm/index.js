@@ -1,21 +1,30 @@
 import React, { useState, useRef } from "react";
 import PropTypes from "prop-types";
 
+import AuthForm from "../AuthForm";
+import AuthLogo from "../AuthLogo";
+import AuthTitle from "../AuthTitle";
 import Input from "../Input";
 import Button from "../Button";
-import { Form, Logo, Title } from "./styles";
+import { RegisterButton } from "./styles";
 import logo from "../../images/logo.svg";
+import { useHistory } from "react-router-dom";
 
 const propTypes = {
-  error: PropTypes.string.isRequired,
+  initialEmail: PropTypes.string,
   onSubmit: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
 };
 
-export default function LoginForm({ onSubmit, isLoading }) {
-  const [email, setEmail] = useState("");
+const defaultProps = {
+  initialEmail: "",
+};
+
+export default function LoginForm({ initialEmail, onSubmit, isLoading }) {
+  const [email, setEmail] = useState(initialEmail);
   const [password, setPassword] = useState("");
   const formRef = useRef();
+  const history = useHistory();
 
   function handleSubmit() {
     const formElement = formRef.current;
@@ -29,9 +38,9 @@ export default function LoginForm({ onSubmit, isLoading }) {
   }
 
   return (
-    <Form ref={formRef}>
-      <Logo src={logo} alt="React Tasks" />
-      <Title>Login</Title>
+    <AuthForm ref={formRef}>
+      <AuthLogo src={logo} alt="React Tasks" />
+      <AuthTitle>Login</AuthTitle>
       <Input
         placeholder="E-mail"
         type="email"
@@ -51,8 +60,12 @@ export default function LoginForm({ onSubmit, isLoading }) {
       <Button isLoading={isLoading} onClick={handleSubmit}>
         Entrar
       </Button>
-    </Form>
+      <RegisterButton type="button" onClick={() => history.push("/register")}>
+        Criar uma conta
+      </RegisterButton>
+    </AuthForm>
   );
 }
 
 LoginForm.propTypes = propTypes;
+LoginForm.defaultProps = defaultProps;
