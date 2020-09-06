@@ -37,6 +37,12 @@ class App {
   start() {
     this.configDatabase();
 
+    this.server.use(function (err, req, res, next) {
+      if (err.name === "UnauthorizedError") {
+        res.status(401).send({ message: "Unauthorized" });
+      }
+    });
+
     this.server.listen(3333, () => {
       console.log("Server running on http://localhost:3333");
     });
