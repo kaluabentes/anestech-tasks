@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
 
-const INITIAL_STATE = { token: undefined, ready: false };
+const INITIAL_STATE = { email: "", token: undefined, ready: false };
 
 const UserStateContext = createContext();
 const UserDispatchContext = createContext();
