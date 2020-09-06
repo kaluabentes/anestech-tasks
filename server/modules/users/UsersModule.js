@@ -9,6 +9,7 @@ class UsersModule extends Module {
     this.addRoute("get", "/api/v1/users/:id", UsersController.getOne);
     this.addRoute("post", "/api/v1/users", UsersController.create);
     this.addRoute("patch", "/api/v1/users/:id", UsersController.update);
+    this.addRoute("delete", "/api/v1/users/:id", UsersController.delete);
   }
 }
 

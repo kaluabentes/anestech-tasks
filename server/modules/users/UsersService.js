@@ -57,6 +57,10 @@ class UsersService {
       : user.password;
     return user.save();
   }
+
+  async delete(id) {
+    return User.deleteOne({ _id: id });
+  }
 }
 
 module.exports = new UsersService();

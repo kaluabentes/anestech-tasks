@@ -2,11 +2,19 @@ const UsersService = require("./UsersService");
 
 class UsersController {
   async getAll(req, res) {
-    res.json(await UsersService.getAll());
+    try {
+      res.json(await UsersService.getAll());
+    } catch (error) {
+      res.status(500).send({ message: error.message });
+    }
   }
 
   async getOne(req, res) {
-    res.json(await UsersService.getOne(req.params.id));
+    try {
+      res.json(await UsersService.getOne(req.params.id));
+    } catch (error) {
+      res.status(500).send({ message: error.message });
+    }
   }
 
   async create(req, res) {
@@ -23,6 +31,14 @@ class UsersController {
       res.json(await UsersService.update(req.params.id, req.body));
     } catch (error) {
       res.status(400).send({ message: error.message });
+    }
+  }
+
+  async delete(req, res) {
+    try {
+      res.json(await UsersService.delete(req.params.id));
+    } catch (error) {
+      res.status(500).send({ message: error.message });
     }
   }
 }
