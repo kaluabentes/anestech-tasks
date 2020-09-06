@@ -2,6 +2,13 @@
 
 A fullstack application to manage time spent on tasks.
 
+## Stack
+
+- MongoDB
+- Express.js
+- React.js
+- Node.js
+
 ## How to run
 
 ### Preparation
