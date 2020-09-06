@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 
 import Sidenav from "../../components/Sidenav";
 import { Container, Main } from "./styles";
 import { useUser } from "../../contexts/user";
+import { useHistory } from "react-router-dom";
 
 const LINKS = [
   {
@@ -26,6 +27,13 @@ const propTypes = {
 
 export default function AppLayout({ children }) {
   const [user, dispatch] = useUser();
+  const history = useHistory();
+
+  useEffect(() => {
+    if (user.ready && !user.token) {
+      history.push("/login");
+    }
+  }, [history, user.ready, user.token]);
 
   function logout() {
     dispatch({ token: undefined });
