@@ -5,10 +5,10 @@ class UsersModule extends Module {
   constructor() {
     super();
 
-    this.router.get("/api/v1/users", UsersController.getAll);
-    this.router.get("/api/v1/users/:id", UsersController.getOne);
-    this.router.post("/api/v1/users", UsersController.create);
-    this.router.patch("/api/v1/users/:id", UsersController.update);
+    this.addRoute("get", "/api/v1/users", UsersController.getAll);
+    this.addRoute("get", "/api/v1/users/:id", UsersController.getOne);
+    this.addRoute("post", "/api/v1/users", UsersController.create);
+    this.addRoute("patch", "/api/v1/users/:id", UsersController.update);
   }
 }
 
