@@ -11,10 +11,12 @@ export function UserProvider({ children }) {
   useEffect(() => {
     const persistedState = localStorage.getItem("user");
 
-    if (persistedState) {
-      setUser({ ...JSON.parse(persistedState), ready: true });
-    } else {
-      setUser({ ...user, ready: true });
+    if (!user.ready) {
+      if (persistedState) {
+        setUser({ ...JSON.parse(persistedState), ready: true });
+      } else {
+        setUser({ ...user, ready: true });
+      }
     }
   }, [user]);
 
