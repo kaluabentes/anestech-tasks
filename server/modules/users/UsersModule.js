@@ -8,6 +8,7 @@ class UsersModule extends Module {
     this.router.get("/api/v1/users", UsersController.getAll);
     this.router.get("/api/v1/users/:id", UsersController.getOne);
     this.router.post("/api/v1/users", UsersController.create);
+    this.router.patch("/api/v1/users/:id", UsersController.update);
   }
 }
 

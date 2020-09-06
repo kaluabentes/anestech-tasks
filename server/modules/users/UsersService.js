@@ -2,7 +2,7 @@ const bcrypt = require("bcrypt");
 const User = require("./User");
 const Joi = require("joi");
 
-class UserService {
+class UsersService {
   getAll() {
     return User.find({});
   }
@@ -30,6 +30,16 @@ class UserService {
       password: await bcrypt.hash(body.password, 10),
     });
   }
+
+  async update(id, body) {
+    const user = await User.findById(id);
+    user.name = body.name || user.name;
+    user.email = body.email || user.email;
+    user.password = body.password
+      ? await bcrypt.hash(body.password, 10)
+      : user.password;
+    return user.save();
+  }
 }
 
-module.exports = new UserService();
+module.exports = new UsersService();
