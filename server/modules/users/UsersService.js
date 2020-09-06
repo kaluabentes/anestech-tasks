@@ -11,6 +11,11 @@ class UsersService {
     return User.findById(id);
   }
 
+  async emailExists(email) {
+    const result = await User.find({ email });
+    return result.length;
+  }
+
   async create(body) {
     const schema = Joi.object({
       name: Joi.string().required(),
@@ -24,8 +29,7 @@ class UsersService {
       throw new Error(error.message);
     }
 
-    const emailExists = await User.find({ email: body.email });
-    if (emailExists) {
+    if (await this.emailExists(body.email)) {
       throw new Error("Email already in use");
     }
 
@@ -38,8 +42,16 @@ class UsersService {
 
   async update(id, body) {
     const user = await User.findById(id);
+
+    if (body.email !== user.email) {
+      if (await this.emailExists(body.email)) {
+        throw new Error("Email already in use");
+      }
+
+      user.email = body.email;
+    }
+
     user.name = body.name || user.name;
-    user.email = body.email || user.email;
     user.password = body.password
       ? await bcrypt.hash(body.password, 10)
       : user.password;
