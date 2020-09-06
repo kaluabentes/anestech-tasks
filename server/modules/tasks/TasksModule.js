@@ -6,6 +6,7 @@ class TasksModule extends Module {
     super();
 
     this.addRoute("get", "/api/v1/tasks", TasksController.getAll);
+    this.addRoute("get", "/api/v1/tasks/:id", TasksController.getOne);
   }
 }
 

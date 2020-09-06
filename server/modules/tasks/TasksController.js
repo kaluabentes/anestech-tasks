@@ -4,6 +4,14 @@ class TasksController {
   async getAll(req, res) {
     res.json(await TasksService.getAll());
   }
+
+  async getOne(req, res) {
+    try {
+      res.json(await TasksService.getOne(req.params.id));
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
+  }
 }
 
 module.exports = new TasksController();
