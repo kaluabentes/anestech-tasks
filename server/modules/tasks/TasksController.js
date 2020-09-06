@@ -2,7 +2,11 @@ const TasksService = require("./TasksService");
 
 class TasksController {
   async getAll(req, res) {
-    res.json(await TasksService.getAll());
+    try {
+      res.json(await TasksService.getAll());
+    } catch (error) {
+      res.status(500).json({ message: error.message });
+    }
   }
 
   async getOne(req, res) {
