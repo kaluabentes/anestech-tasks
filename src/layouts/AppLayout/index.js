@@ -25,7 +25,11 @@ const propTypes = {
 };
 
 export default function AppLayout({ children }) {
-  const [user] = useUser();
+  const [user, dispatch] = useUser();
+
+  function logout() {
+    dispatch({ token: undefined });
+  }
 
   if (!user.token) {
     return null;
@@ -33,7 +37,7 @@ export default function AppLayout({ children }) {
 
   return (
     <Container>
-      <Sidenav links={LINKS} />
+      <Sidenav links={LINKS} onLogout={logout} />
       <Main>{children}</Main>
     </Container>
   );
