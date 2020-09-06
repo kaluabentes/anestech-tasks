@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 import Sidenav from "../../components/Sidenav";
 import { Container, Main } from "./styles";
+import { useUser } from "../../contexts/user";
 
 const LINKS = [
   {
@@ -24,6 +25,12 @@ const propTypes = {
 };
 
 export default function AppLayout({ children }) {
+  const [user] = useUser();
+
+  if (!user.token) {
+    return null;
+  }
+
   return (
     <Container>
       <Sidenav links={LINKS} />
