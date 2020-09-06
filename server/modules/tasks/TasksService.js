@@ -1,13 +1,13 @@
-const Task = require("./Task");
 const Joi = require("joi");
+const Task = require("./Task");
 
 class TasksService {
   getAll() {
-    return Task.find({}).populate("user");
+    return Task.find({}).populate("user", "name");
   }
 
   getOne(id) {
-    return Task.findById(id);
+    return Task.findById(id).populate("user", "name");
   }
 
   async create(body) {
