@@ -4,11 +4,11 @@ const Joi = require("joi");
 
 class UsersService {
   getAll() {
-    return User.find({});
+    return User.find({}).select("-password").exec();
   }
 
   getOne(id) {
-    return User.findById(id);
+    return User.findById(id).select("-password").exec();
   }
 
   async emailExists(email) {
@@ -29,11 +29,17 @@ class UsersService {
       throw new Error("Email already in use");
     }
 
-    return User.create({
+    const user = await User.create({
       name: body.name,
       email: body.email,
       password: await bcrypt.hash(body.password, 10),
     });
+
+    return {
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+    };
   }
 
   async update(id, body) {
@@ -51,7 +57,14 @@ class UsersService {
     user.password = body.password
       ? await bcrypt.hash(body.password, 10)
       : user.password;
-    return user.save();
+
+    const nextUser = await user.save();
+
+    return {
+      _id: nextUser._id,
+      name: nextUser.name,
+      email: nextUser.email,
+    };
   }
 
   async delete(id) {
