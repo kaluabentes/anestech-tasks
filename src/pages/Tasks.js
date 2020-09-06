@@ -2,6 +2,7 @@ import React from "react";
 import { Helmet } from "react-helmet";
 
 import AppLayout from "../layouts/AppLayout";
+import PageTitle from "../components/PageTitle";
 
 export default function Tasks() {
   return (
@@ -9,7 +10,7 @@ export default function Tasks() {
       <Helmet>
         <title>Tasks - React Tasks</title>
       </Helmet>
-      Tasks
+      <PageTitle>Tasks</PageTitle>
     </AppLayout>
   );
 }

@@ -2,6 +2,7 @@ import React from "react";
 import { Helmet } from "react-helmet";
 
 import AppLayout from "../layouts/AppLayout";
+import PageTitle from "../components/PageTitle";
 
 export default function Home() {
   return (
@@ -9,7 +10,7 @@ export default function Home() {
       <Helmet>
         <title>Home - React Tasks</title>
       </Helmet>
-      Home
+      <PageTitle>Em andamento</PageTitle>
     </AppLayout>
   );
 }
