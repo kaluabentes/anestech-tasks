@@ -6,6 +6,7 @@ class UsersModule extends Module {
     super();
 
     this.router.get("/api/v1/users", UsersController.getAll);
+    this.router.get("/api/v1/users/:id", UsersController.getOne);
     this.router.post("/api/v1/users", UsersController.create);
   }
 }

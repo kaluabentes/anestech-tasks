@@ -5,7 +5,9 @@ class UsersController {
     res.json(await UserService.getAll());
   }
 
-  getOne(req, res) {}
+  async getOne(req, res) {
+    res.json(await UserService.getOne(req.params.id));
+  }
 
   async create(req, res) {
     try {

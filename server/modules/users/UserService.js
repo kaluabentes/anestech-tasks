@@ -7,6 +7,10 @@ class UserService {
     return User.find({});
   }
 
+  getOne(id) {
+    return User.findById(id);
+  }
+
   async create(body) {
     const schema = Joi.object({
       name: Joi.string().required(),
