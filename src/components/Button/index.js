@@ -9,15 +9,28 @@ const propTypes = {
   isLoading: PropTypes.bool,
   isInline: PropTypes.bool,
   children: PropTypes.node.isRequired,
+  variant: PropTypes.oneOf(["secondary", "primary", undefined]),
 };
 
 const defaultProps = {
   isLoading: false,
+  variant: undefined,
 };
 
-export default function Button({ isLoading, isInline, onClick, children }) {
+export default function Button({
+  isLoading,
+  isInline,
+  onClick,
+  children,
+  variant,
+}) {
   return (
-    <Container isInline={isInline} type="button" onClick={onClick}>
+    <Container
+      variant={variant}
+      isInline={isInline}
+      type="button"
+      onClick={onClick}
+    >
       {isLoading ? <DotLoader color="white" /> : children}
     </Container>
   );
