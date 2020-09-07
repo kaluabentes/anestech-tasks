@@ -6,11 +6,13 @@ import AuthLayout from "../layouts/AuthLayout";
 import LoginForm from "../components/LoginForm";
 import AuthApi from "../services/AuthApi";
 import { useUser } from "../contexts/user";
+import { useNotification } from "../contexts/notification";
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [user, dispatch] = useUser();
   const history = useHistory();
+  const [, dispatchNotification] = useNotification();
 
   async function login(body) {
     setIsLoading(true);
@@ -22,7 +24,10 @@ export default function Login() {
       history.push("/");
     } catch (error) {
       setIsLoading(false);
-      alert(error.response.data.message);
+      dispatchNotification({
+        message: error.response.data.message,
+        isOpen: true,
+      });
     }
   }
 

@@ -8,8 +8,21 @@ import Users from "./pages/Users";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import GlobalStyles from "./styles/GlobalStyles";
+import Notification from "./components/Notification";
+import { useNotification } from "./contexts/notification";
 
 export default function App() {
+  const [
+    { isOpen: isNotificationOpen, message: notification },
+    dispatch,
+  ] = useNotification();
+
+  function closeNotification() {
+    dispatch({
+      isOpen: false,
+    });
+  }
+
   return (
     <>
       <Helmet>
@@ -30,6 +43,11 @@ export default function App() {
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
       </Switch>
+      <Notification
+        isOpen={isNotificationOpen}
+        message={notification}
+        onClose={closeNotification}
+      />
     </>
   );
 }

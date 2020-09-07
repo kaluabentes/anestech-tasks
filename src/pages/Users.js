@@ -10,17 +10,16 @@ import ActionButton from "../components/ActionButton";
 import { useUser } from "../contexts/user";
 import Button from "../components/Button";
 import UserModal from "../components/UserModal";
-import Notification from "../components/Notification";
+import { useNotification } from "../contexts/notification";
 
 export default function Users() {
   const [users, setUsers] = useState([]);
   const [user] = useUser();
   const usersApi = new UsersApi(user.token);
   const [isSaving, setIsSaving] = useState(false);
-  const [notification, setNotification] = useState("");
-  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState(undefined);
+  const [, dispatchNotification] = useNotification();
 
   useEffect(() => {
     fetchUsers();
@@ -45,8 +44,10 @@ export default function Users() {
     try {
       await usersApi.delete(id);
       fetchUsers();
-      setNotification("Usuário deletado com sucesso");
-      setIsNotificationOpen(true);
+      dispatchNotification({
+        message: "Usuário deletado com sucesso",
+        isOpen: true,
+      });
     } catch (error) {
       console.log(error.message);
     }
@@ -58,18 +59,25 @@ export default function Users() {
     try {
       await usersApi.create(user);
       fetchUsers();
-      setNotification("Usuário criado com sucesso");
-      setIsUserModalOpen(false);
+      dispatchNotification({
+        message: "Usuário criado com sucesso",
+        isOpen: true,
+      });
     } catch (error) {
       if (error.response.data) {
-        setNotification(error.response.data.message);
+        dispatchNotification({
+          message: error.response.data.message,
+          isOpen: true,
+        });
         return;
       }
 
-      setNotification(error.message);
+      dispatchNotification({
+        message: error.message,
+        isOpen: true,
+      });
     } finally {
       setIsSaving(false);
-      setIsNotificationOpen(true);
     }
   }
 
@@ -89,19 +97,27 @@ export default function Users() {
     try {
       await usersApi.update(currentUser._id, body);
       fetchUsers();
-      setNotification("Usuário atualizado com sucesso");
+      dispatchNotification({
+        message: "Usuário atualizado com sucesso",
+        isOpen: true,
+      });
       setCurrentUser(undefined);
       setIsUserModalOpen(false);
     } catch (error) {
       if (error.response.data) {
-        setNotification(error.response.data.message);
+        dispatchNotification({
+          message: error.response.data.message,
+          isOpen: true,
+        });
         return;
       }
 
-      console.log(error.message);
+      dispatchNotification({
+        message: error.message,
+        isOpen: true,
+      });
     } finally {
       setIsSaving(false);
-      setIsNotificationOpen(true);
     }
   }
 
@@ -155,11 +171,6 @@ export default function Users() {
         title="Adicionar usuário"
         onCancel={closeUserModal}
         onSave={currentUser ? updateUser : createUser}
-      />
-      <Notification
-        isOpen={isNotificationOpen}
-        message={notification}
-        onClose={() => setIsNotificationOpen(false)}
       />
     </AppLayout>
   );

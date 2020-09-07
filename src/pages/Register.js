@@ -6,11 +6,13 @@ import AuthLayout from "../layouts/AuthLayout";
 import RegisterForm from "../components/RegisterForm";
 import AuthApi from "../services/AuthApi";
 import { useUser } from "../contexts/user";
+import { useNotification } from "../contexts/notification";
 
 export default function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const [, dispatch] = useUser();
   const history = useHistory();
+  const [, dispatchNotification] = useNotification();
 
   async function register(body) {
     setIsLoading(true);
@@ -23,11 +25,17 @@ export default function Login() {
     } catch (error) {
       setIsLoading(false);
       if (error.response.data) {
-        alert(error.response.data.message);
+        dispatchNotification({
+          message: error.response.data.message,
+          isOpen: true,
+        });
         return;
       }
 
-      alert(error.message);
+      dispatchNotification({
+        message: error.message,
+        isOpen: true,
+      });
     }
   }
 

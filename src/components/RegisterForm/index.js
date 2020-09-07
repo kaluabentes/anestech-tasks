@@ -65,7 +65,7 @@ export default function RegisterForm({ onSubmit, isLoading }) {
         required
         margin="0 0 20px 0"
       />
-      <Button isLoading={isLoading} onClick={handleSubmit}>
+      <Button variant="primary" isLoading={isLoading} onClick={handleSubmit}>
         Registrar
       </Button>
     </AuthForm>
