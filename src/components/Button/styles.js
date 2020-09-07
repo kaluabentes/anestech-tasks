@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import { COLOR_SHARK } from "../../styles/colors";
 
 export const Container = styled.button`
-  font-size: 0.875rem;
+  font-size: 1rem;
   padding: 12px 15px;
   border: 0;
   width: 100%;

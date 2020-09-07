@@ -10,5 +10,4 @@ export const RegisterButton = styled.button`
   padding: 15px 0 0 0;
   width: 100%;
   display: block;
-  font-size: 0.875rem;
 `;
