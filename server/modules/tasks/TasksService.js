@@ -7,7 +7,7 @@ class TasksService {
   }
 
   getOne(id) {
-    return Task.findById(id).populate("user", "name");
+    return Task.findById(id);
   }
 
   async create(body) {
