@@ -24,11 +24,13 @@ class TasksService {
       throw new Error(error.message);
     }
 
+    console.log(body.startDate);
+
     return Task.create({
       description: body.description,
       user: body.user,
-      startDate: new Date(body.startDate),
-      endDate: body.endDate ? new Date(body.endDate) : null,
+      startDate: body.startDate,
+      endDate: body.endDate,
     });
   }
 
