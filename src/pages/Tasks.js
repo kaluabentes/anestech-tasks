@@ -45,8 +45,21 @@ export default function Tasks() {
     alert(id);
   }
 
-  function deleteTask(id) {
-    alert(id);
+  async function deleteTask(id) {
+    // eslint-disable-next-line no-restricted-globals
+    if (!confirm("Você tem certeza?")) {
+      return;
+    }
+
+    try {
+      await tasksApi.delete(id);
+      fetchTasks();
+    } catch (error) {
+      dispatchNotification({
+        message: error.message,
+        isOpen: true,
+      });
+    }
   }
 
   function closeTaskModal() {
