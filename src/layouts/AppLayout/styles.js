@@ -10,5 +10,5 @@ export const Main = styled.div`
   flex: 1 1 auto;
   overflow: auto;
   background: ${COLOR_WILD_SAND};
-  padding: 40px;
+  padding: 20px;
 `;
