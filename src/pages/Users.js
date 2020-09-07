@@ -13,21 +13,35 @@ import Button from "../components/Button";
 export default function Users() {
   const [users, setUsers] = useState([]);
   const [user] = useUser();
+  const usersApi = new UsersApi(user.token);
 
   useEffect(() => {
-    const usersApi = new UsersApi(user.token);
+    fetchUsers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user.token]);
 
-    async function fetchUsers() {
-      try {
-        const { data } = await usersApi.getAll();
-        setUsers(data);
-      } catch (error) {
-        console.log(error.message);
-      }
+  async function fetchUsers() {
+    try {
+      const { data } = await usersApi.getAll();
+      setUsers(data);
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+  async function deleteUser(id) {
+    // eslint-disable-next-line no-restricted-globals
+    if (!confirm("Você tem certeza?")) {
+      return;
     }
 
-    fetchUsers();
-  }, [user.token]);
+    try {
+      await usersApi.delete(id);
+      fetchUsers();
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
 
   return (
     <AppLayout>
@@ -49,7 +63,10 @@ export default function Users() {
             <Table.Data>{user.email}</Table.Data>
             <Table.Data>
               <ActionButton icon="edit" onClick={() => alert("edit")} />
-              <ActionButton icon="delete" onClick={() => alert("delete")} />
+              <ActionButton
+                icon="delete"
+                onClick={() => deleteUser(user._id)}
+              />
             </Table.Data>
           </Table.Row>
         ))}

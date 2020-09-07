@@ -8,4 +8,8 @@ export default class UsersApi {
   getAll() {
     return api.get("/api/v1/users");
   }
+
+  delete(id) {
+    return api.delete(`/api/v1/users/${id}`);
+  }
 }
