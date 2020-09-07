@@ -7,6 +7,7 @@ import Select from "../Select";
 import Button from "../Button";
 import { Form, Actions, Title } from "./styles";
 import useUsers from "../../hooks/useUsers";
+import formatDateTimeInput from "../../utils/formatDateTimeInput";
 
 const INITIAL_STATE = {
   description: "",
@@ -23,7 +24,7 @@ const propTypes = {
     description: PropTypes.string.isRequired,
     user: PropTypes.string.isRequired,
     startDate: PropTypes.string.isRequired,
-    endDate: PropTypes.string.isRequired,
+    endDate: PropTypes.string,
   }),
   onCancel: PropTypes.func.isRequired,
   onSave: PropTypes.func.isRequired,
@@ -112,7 +113,7 @@ export default function TaskModal({
           placeholder="Data de início"
           name="startDate"
           type="datetime-local"
-          value={task.startDate}
+          value={task.startDate ? formatDateTimeInput(task.startDate) : ""}
           onChange={handleChange}
           required
           margin="0 0 20px 0"
@@ -123,7 +124,7 @@ export default function TaskModal({
           placeholder="Data de conclusão"
           name="endDate"
           type="datetime-local"
-          value={task.endDate}
+          value={task.endDate ? formatDateTimeInput(task.endDate) : ""}
           onChange={handleChange}
           margin="0 0 20px 0"
         />
