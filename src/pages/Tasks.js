@@ -9,12 +9,18 @@ import { useNotification } from "../contexts/notification";
 import Table from "../components/Table";
 import ActionButton from "../components/ActionButton";
 import formatDate from "../utils/formatDate";
+import TaskModal from "../components/TaskModal";
+import PageHeader from "../components/PageHeader";
+import Button from "../components/Button";
 
 export default function Tasks() {
   const [user] = useUser();
   const tasksApi = new TasksApi(user.token);
   const [tasks, setTasks] = useState([]);
   const [, dispatchNotification] = useNotification();
+  const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [currentTask, setCurrentTask] = useState(undefined);
 
   useEffect(() => {
     if (user.ready) {
@@ -43,12 +49,60 @@ export default function Tasks() {
     alert(id);
   }
 
+  function closeTaskModal() {
+    setIsTaskModalOpen(false);
+  }
+
+  async function createTask(body) {
+    setIsSaving(true);
+
+    try {
+      const preparedBody = { ...body, endDate: body.endDate || undefined };
+      await tasksApi.create(preparedBody);
+      fetchTasks();
+      dispatchNotification({
+        message: "Task criada com sucesso",
+        isOpen: true,
+      });
+      setIsTaskModalOpen(false);
+    } catch (error) {
+      if (error.response.data) {
+        dispatchNotification({
+          message: error.response.data.message,
+          isOpen: true,
+        });
+        return;
+      }
+
+      dispatchNotification({
+        message: error.message,
+        isOpen: true,
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  }
+
+  function updateTask(body) {}
+
   return (
     <AppLayout>
       <Helmet>
         <title>Tasks - React Tasks</title>
       </Helmet>
-      <PageTitle>Tasks</PageTitle>
+      <PageHeader
+        actions={
+          <Button
+            variant="primary"
+            isInline
+            onClick={() => setIsTaskModalOpen(true)}
+          >
+            Adicionar
+          </Button>
+        }
+      >
+        <PageTitle>Tasks</PageTitle>
+      </PageHeader>
       <Table>
         <Table.Row>
           <Table.Head>Descrição</Table.Head>
@@ -62,7 +116,9 @@ export default function Tasks() {
             <Table.Data>{task.description}</Table.Data>
             <Table.Data>{task.user.name}</Table.Data>
             <Table.Data>{formatDate(task.startDate)}</Table.Data>
-            <Table.Data>{formatDate(task.endDate)}</Table.Data>
+            <Table.Data>
+              {task.endDate ? formatDate(task.endDate) : null}
+            </Table.Data>
             <Table.Data>
               <ActionButton icon="edit" onClick={() => editTask(task._id)} />
               <ActionButton
@@ -73,6 +129,14 @@ export default function Tasks() {
           </Table.Row>
         ))}
       </Table>
+      <TaskModal
+        isOpen={isTaskModalOpen}
+        isLoading={isSaving}
+        initialTask={currentTask}
+        title="Adicionar task"
+        onCancel={closeTaskModal}
+        onSave={currentTask ? updateTask : createTask}
+      />
     </AppLayout>
   );
 }
