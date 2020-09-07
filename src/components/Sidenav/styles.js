@@ -11,6 +11,8 @@ export const Nav = styled.nav`
   display: flex;
   align-items: center;
   flex-direction: column;
+  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.4);
+  z-index: 2;
 `;
 
 export const Links = styled.div`
@@ -39,7 +41,7 @@ export const Button = styled.button`
 
 export const Icon = styled(BaseIcon)`
   color: white;
-  font-size: 32px;
+  font-size: 28px;
 `;
 
 export const Logo = styled.img`
