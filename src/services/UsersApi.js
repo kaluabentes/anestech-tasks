@@ -12,4 +12,8 @@ export default class UsersApi {
   delete(id) {
     return api.delete(`/api/v1/users/${id}`);
   }
+
+  create(body) {
+    return api.post("/api/v1/users", body);
+  }
 }
