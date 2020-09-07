@@ -1,10 +1,16 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import PropTypes from "prop-types";
 
 import Modal from "../Modal";
 import Input from "../Input";
 import Button from "../Button";
 import { Form, Actions, Title } from "./styles";
+
+const INITIAL_STATE = {
+  name: "",
+  email: "",
+  password: "",
+};
 
 const propTypes = {
   title: PropTypes.string.isRequired,
@@ -31,8 +37,16 @@ export default function UserModal({
   onCancel,
   onSave,
 }) {
-  const [user, setUser] = useState(initialUser || {});
+  const [user, setUser] = useState(INITIAL_STATE);
   const formRef = useRef();
+
+  useEffect(() => {
+    if (initialUser) {
+      setUser(initialUser);
+    } else {
+      setUser(INITIAL_STATE);
+    }
+  }, [initialUser]);
 
   function handleChange(event) {
     setUser({
@@ -48,6 +62,12 @@ export default function UserModal({
     }
 
     onSave(user);
+    setUser(INITIAL_STATE);
+  }
+
+  function handleCancel() {
+    setUser(INITIAL_STATE);
+    onCancel();
   }
 
   return (
@@ -83,11 +103,11 @@ export default function UserModal({
           type="password"
           value={user.password}
           onChange={handleChange}
-          required
+          required={!initialUser}
           margin="0 0 20px 0"
         />
         <Actions>
-          <Button variant="secondary" onClick={onCancel}>
+          <Button variant="secondary" onClick={handleCancel}>
             Cancelar
           </Button>
           <Button isLoading={isLoading} variant="primary" onClick={handleSave}>
