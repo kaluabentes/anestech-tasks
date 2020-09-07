@@ -7,6 +7,7 @@ import { Container } from "./styles";
 const propTypes = {
   onClick: PropTypes.func.isRequired,
   isLoading: PropTypes.bool,
+  isInline: PropTypes.bool,
   children: PropTypes.node.isRequired,
 };
 
@@ -14,9 +15,9 @@ const defaultProps = {
   isLoading: false,
 };
 
-export default function Button({ isLoading, onClick, children }) {
+export default function Button({ isLoading, isInline, onClick, children }) {
   return (
-    <Container type="button" onClick={onClick}>
+    <Container isInline={isInline} type="button" onClick={onClick}>
       {isLoading ? <DotLoader color="white" /> : children}
     </Container>
   );
