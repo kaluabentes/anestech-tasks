@@ -22,9 +22,11 @@ export default function Users() {
   const [, dispatchNotification] = useNotification();
 
   useEffect(() => {
-    fetchUsers();
+    if (user.ready) {
+      fetchUsers();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user.token]);
+  }, [user.ready]);
 
   async function fetchUsers() {
     try {
