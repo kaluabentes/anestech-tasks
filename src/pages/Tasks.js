@@ -41,8 +41,17 @@ export default function Tasks() {
     }
   }
 
-  function editTask(id) {
-    alert(id);
+  async function editTask(id) {
+    try {
+      const { data } = await tasksApi.getOne(id);
+      setCurrentTask(data);
+      setIsTaskModalOpen(true);
+    } catch (error) {
+      dispatchNotification({
+        message: error.message,
+        isOpen: true,
+      });
+    }
   }
 
   async function deleteTask(id) {
@@ -96,7 +105,37 @@ export default function Tasks() {
     }
   }
 
-  function updateTask(body) {}
+  async function updateTask(body) {
+    setIsSaving(true);
+
+    try {
+      const preparedBody = { ...body, endDate: body.endDate || undefined };
+
+      await tasksApi.update(currentTask._id, preparedBody);
+      fetchTasks();
+      dispatchNotification({
+        message: "Task atualizada com sucesso",
+        isOpen: true,
+      });
+      setIsTaskModalOpen(false);
+      setCurrentTask(undefined);
+    } catch (error) {
+      if (error.response.data) {
+        dispatchNotification({
+          message: error.response.data.message,
+          isOpen: true,
+        });
+        return;
+      }
+
+      dispatchNotification({
+        message: error.message,
+        isOpen: true,
+      });
+    } finally {
+      setIsSaving(false);
+    }
+  }
 
   return (
     <AppLayout>
