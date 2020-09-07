@@ -1,7 +1,7 @@
 import styled, { css } from "styled-components";
 import { COLOR_SHARK } from "../../styles/colors";
 
-export default styled.input`
+const Input = styled.input`
   font-size: 1rem;
   padding: 10px 8px;
   border-radius: 0;
@@ -21,3 +21,11 @@ export default styled.input`
       margin: ${(props) => props.margin}px;
     `}
 `;
+
+Input.Label = styled.label`
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+`;
+
+export default Input;
