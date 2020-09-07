@@ -6,7 +6,6 @@ import AuthLogo from "../AuthLogo";
 import AuthTitle from "../AuthTitle";
 import Input from "../Input";
 import Button from "../Button";
-import { RegisterButton } from "./styles";
 import logo from "../../images/logo.svg";
 import { useHistory } from "react-router-dom";
 
@@ -57,12 +56,12 @@ export default function LoginForm({ initialEmail, onSubmit, isLoading }) {
         required
         margin="0 0 15px 0"
       />
-      <Button isLoading={isLoading} onClick={handleSubmit}>
+      <Button variant="primary" isLoading={isLoading} onClick={handleSubmit}>
         Entrar
       </Button>
-      <RegisterButton type="button" onClick={() => history.push("/register")}>
+      <Button type="button" onClick={() => history.push("/register")}>
         Criar uma conta
-      </RegisterButton>
+      </Button>
     </AuthForm>
   );
 }
