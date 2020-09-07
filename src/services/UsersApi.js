@@ -22,6 +22,6 @@ export default class UsersApi {
   }
 
   update(id, body) {
-    return api.post(`/api/v1/users/${id}`, body);
+    return api.patch(`/api/v1/users/${id}`, body);
   }
 }

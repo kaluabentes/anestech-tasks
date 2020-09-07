@@ -20,6 +20,7 @@ export default function Users() {
   const [notification, setNotification] = useState("");
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const [isUserModalOpen, setIsUserModalOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState(undefined);
 
   useEffect(() => {
     fetchUsers();
@@ -57,20 +58,56 @@ export default function Users() {
     try {
       await usersApi.create(user);
       fetchUsers();
-      setIsSaving(false);
       setNotification("Usuário criado com sucesso");
-      setIsNotificationOpen(true);
       setIsUserModalOpen(false);
     } catch (error) {
-      setIsSaving(false);
-
       if (error.response.data) {
-        alert(error.response.data.message);
+        setNotification(error.response.data.message);
+        return;
+      }
+
+      setNotification(error.message);
+    } finally {
+      setIsSaving(false);
+      setIsNotificationOpen(true);
+    }
+  }
+
+  async function editUser(id) {
+    try {
+      const { data } = await usersApi.getOne(id);
+      setCurrentUser(data);
+      setIsUserModalOpen(true);
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
+  async function updateUser(body) {
+    setIsSaving(true);
+
+    try {
+      await usersApi.update(currentUser._id, body);
+      fetchUsers();
+      setNotification("Usuário atualizado com sucesso");
+      setCurrentUser(undefined);
+      setIsUserModalOpen(false);
+    } catch (error) {
+      if (error.response.data) {
+        setNotification(error.response.data.message);
         return;
       }
 
       console.log(error.message);
+    } finally {
+      setIsSaving(false);
+      setIsNotificationOpen(true);
     }
+  }
+
+  function closeUserModal() {
+    setIsUserModalOpen(false);
+    setCurrentUser(undefined);
   }
 
   return (
@@ -102,7 +139,7 @@ export default function Users() {
             <Table.Data>{user.name}</Table.Data>
             <Table.Data>{user.email}</Table.Data>
             <Table.Data>
-              <ActionButton icon="edit" onClick={() => alert("edit")} />
+              <ActionButton icon="edit" onClick={() => editUser(user._id)} />
               <ActionButton
                 icon="delete"
                 onClick={() => deleteUser(user._id)}
@@ -114,9 +151,10 @@ export default function Users() {
       <UserModal
         isOpen={isUserModalOpen}
         isLoading={isSaving}
+        initialUser={currentUser}
         title="Adicionar usuário"
-        onCancel={() => alert("cancel")}
-        onSave={createUser}
+        onCancel={closeUserModal}
+        onSave={currentUser ? updateUser : createUser}
       />
       <Notification
         isOpen={isNotificationOpen}
