@@ -8,7 +8,7 @@ const common = css`
 
 export const Container = styled.button`
   font-size: 1rem;
-  padding: 12px 15px;
+  padding: 15px 25px;
   border: 0;
   width: 100%;
   display: block;
