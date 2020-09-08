@@ -4,7 +4,7 @@ import { COLOR_SHARK } from "../../styles/colors";
 
 export default css`
   font-size: 1rem;
-  padding: 10px 8px;
+  padding: 15px;
   border-radius: 0;
   width: 100%;
   outline: none;
