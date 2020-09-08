@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const helmet = require("helmet");
 const cors = require("cors");
+const path = require("path");
 
 class App {
   constructor(env) {
@@ -9,6 +10,7 @@ class App {
     this.server.use(helmet());
     this.server.use(cors());
     this.server.use(express.json());
+    this.server.use(express.static(path.join(__dirname + "/../build")));
     this.env = env;
   }
 
@@ -17,12 +19,10 @@ class App {
   }
 
   configDatabase() {
-    mongoose.connect(this.env.DB_CONNECTION, {
+    mongoose.connect(this.env.MONGODB_URI, {
       auth: {
         authSource: "admin",
       },
-      user: this.env.DB_USER,
-      pass: this.env.DB_PASS,
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
@@ -36,8 +36,15 @@ class App {
     });
   }
 
+  configClient() {
+    this.server.get("*", (req, res) => {
+      res.sendFile(path.join(__dirname + "/../build/index.html"));
+    });
+  }
+
   start() {
     this.configDatabase();
+    this.configClient();
 
     this.server.use(function (err, req, res, next) {
       if (err.name === "UnauthorizedError") {
