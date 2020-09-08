@@ -1,8 +1,7 @@
-import padZero from "./padZero";
+import getDateComponents from "./getDateComponents";
 
 export default function formatDate(dateString) {
-  const date = new Date(dateString);
-  return `${padZero(date.getUTCDate())}/${padZero(
-    date.getUTCMonth() + 1
-  )}/${date.getFullYear()} às ${date.getHours()}:${date.getMinutes()}`;
+  const [year, month, day, hours, minutes] = getDateComponents(dateString);
+
+  return `${day}/${month}/${year} às ${hours}:${minutes}`;
 }
