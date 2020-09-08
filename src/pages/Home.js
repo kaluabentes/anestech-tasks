@@ -6,9 +6,11 @@ import PageTitle from "../components/PageTitle";
 import useTasks from "../hooks/useTasks";
 import TaskCard from "../components/TaskCard";
 import formatDate from "../utils/formatDate";
+import EmptyState from "../components/EmptyState";
 
 export default function Home() {
   const tasks = useTasks();
+  const pendingTasks = tasks.filter((task) => !task.endDate);
 
   return (
     <AppLayout>
@@ -16,10 +18,11 @@ export default function Home() {
         <title>Home - React Tasks</title>
       </Helmet>
       <PageTitle>Em andamento</PageTitle>
-      <TaskCard.Grid>
-        {tasks
-          .filter((task) => !task.endDate)
-          .map((task) => (
+      {!pendingTasks.length ? (
+        <EmptyState>Não há tarefas pendentes :)</EmptyState>
+      ) : (
+        <TaskCard.Grid>
+          {pendingTasks.map((task) => (
             <TaskCard
               key={task._id}
               description={task.description}
@@ -27,7 +30,8 @@ export default function Home() {
               user={`Por ${task.user.name}`}
             />
           ))}
-      </TaskCard.Grid>
+        </TaskCard.Grid>
+      )}
     </AppLayout>
   );
 }
