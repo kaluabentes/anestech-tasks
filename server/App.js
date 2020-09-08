@@ -4,6 +4,8 @@ const helmet = require("helmet");
 const cors = require("cors");
 const path = require("path");
 
+const PORT = process.env.PORT || 5000;
+
 class App {
   constructor(env) {
     this.server = express();
@@ -52,8 +54,8 @@ class App {
       }
     });
 
-    this.server.listen(3333, () => {
-      console.log("Server running on http://localhost:3333");
+    this.server.listen(PORT, () => {
+      console.log(`Server running on http://localhost:${PORT}`);
     });
   }
 }
