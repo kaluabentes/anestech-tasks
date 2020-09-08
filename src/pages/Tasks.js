@@ -14,6 +14,7 @@ import PageHeader from "../components/PageHeader";
 import Button from "../components/Button";
 import Input from "../components/Input";
 import styled from "styled-components";
+import EmptyState from "../components/EmptyState";
 
 const FilterContainer = styled.div`
   display: flex;
@@ -107,7 +108,7 @@ export default function Tasks() {
       });
       setIsTaskModalOpen(false);
     } catch (error) {
-      if (error.response.data) {
+      if (error.response) {
         dispatchNotification({
           message: error.response.data.message,
           isOpen: true,
@@ -139,7 +140,7 @@ export default function Tasks() {
       setIsTaskModalOpen(false);
       setCurrentTask(undefined);
     } catch (error) {
-      if (error.response.data) {
+      if (error.response) {
         dispatchNotification({
           message: error.response.data.message,
           isOpen: true,
@@ -219,37 +220,43 @@ export default function Tasks() {
       >
         <PageTitle>Tarefas</PageTitle>
       </PageHeader>
-      <FilterContainer>
-        <FilterColumn>
-          <Input.Label>Pesquisar</Input.Label>
-          <Input
-            placeholder="Buscar tarefa"
-            value={search}
-            onChange={(event) => setSearch(event.target.value)}
-          />
-        </FilterColumn>
-        <FilterColumn>
-          <Input.Label>Filtrar data</Input.Label>
-          <Input
-            placeholder="Filtrar data"
-            value={dateFilter}
-            onChange={(event) => setDateFilter(event.target.value)}
-            type="date"
-          />
-        </FilterColumn>
-      </FilterContainer>
-      <Table>
-        <thead>
-          <Table.Row>
-            <Table.Head>Descrição</Table.Head>
-            <Table.Head>Usuário</Table.Head>
-            <Table.Head>Data de início</Table.Head>
-            <Table.Head>Data de conclusão</Table.Head>
-            <Table.Head width="10%">Ações</Table.Head>
-          </Table.Row>
-        </thead>
-        <tbody>{renderTasks(filterTasks(tasks))}</tbody>
-      </Table>
+      {!tasks.length ? (
+        <EmptyState>Não há tarefas por aqui :(</EmptyState>
+      ) : (
+        <>
+          <FilterContainer>
+            <FilterColumn>
+              <Input.Label>Pesquisar</Input.Label>
+              <Input
+                placeholder="Buscar tarefa"
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+              />
+            </FilterColumn>
+            <FilterColumn>
+              <Input.Label>Filtrar data</Input.Label>
+              <Input
+                placeholder="Filtrar data"
+                value={dateFilter}
+                onChange={(event) => setDateFilter(event.target.value)}
+                type="date"
+              />
+            </FilterColumn>
+          </FilterContainer>
+          <Table>
+            <thead>
+              <Table.Row>
+                <Table.Head>Descrição</Table.Head>
+                <Table.Head>Usuário</Table.Head>
+                <Table.Head>Data de início</Table.Head>
+                <Table.Head>Data de conclusão</Table.Head>
+                <Table.Head width="10%">Ações</Table.Head>
+              </Table.Row>
+            </thead>
+            <tbody>{renderTasks(filterTasks(tasks))}</tbody>
+          </Table>
+        </>
+      )}
       <TaskModal
         isOpen={isTaskModalOpen}
         isLoading={isSaving}
