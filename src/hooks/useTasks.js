@@ -22,7 +22,7 @@ export default function useTasks() {
       }
     }
 
-    if (user.ready) {
+    if (user.ready && user.token) {
       fetchTasks();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
