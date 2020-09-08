@@ -24,7 +24,7 @@ export default function Login() {
       history.push("/login");
     } catch (error) {
       setIsLoading(false);
-      if (error.response.data) {
+      if (error.response) {
         dispatchNotification({
           message: error.response.data.message,
           isOpen: true,
