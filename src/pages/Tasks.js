@@ -20,10 +20,14 @@ const FilterContainer = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
+`;
 
-  & input,
-  & select {
-    width: 20%;
+const FilterColumn = styled.div`
+  flex: 1 1 auto;
+  max-width: 20%;
+
+  & input {
+    width: 100%;
   }
 `;
 
@@ -36,6 +40,7 @@ export default function Tasks() {
   const [isSaving, setIsSaving] = useState(false);
   const [currentTask, setCurrentTask] = useState(undefined);
   const [search, setSearch] = useState("");
+  const [dateFilter, setDateFilter] = useState("");
 
   useEffect(() => {
     if (user.ready) {
@@ -43,7 +48,7 @@ export default function Tasks() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.ready]);
-
+  console.log(dateFilter);
   async function fetchTasks() {
     try {
       const { data } = await tasksApi.getAll();
@@ -152,11 +157,32 @@ export default function Tasks() {
     }
   }
 
-  function searchTasks() {
-    return tasks.filter((task) => {
-      const regex = new RegExp(search, "i");
-      return regex.test(task.description);
-    });
+  function testDateFilter(task) {
+    const regex = new RegExp(dateFilter, "i");
+    return regex.test(task.startDate) || regex.test(task.endDate);
+  }
+
+  function testSearch(task) {
+    const regex = new RegExp(search, "i");
+    return regex.test(task.description) || regex.test(task.user.name);
+  }
+
+  function filterTasks(tasksList) {
+    if (dateFilter && search) {
+      return tasksList.filter(
+        (task) => testSearch(task) && testDateFilter(task)
+      );
+    }
+
+    if (search) {
+      return tasksList.filter(testSearch);
+    }
+
+    if (dateFilter) {
+      return tasksList.filter(testDateFilter);
+    }
+
+    return tasksList;
   }
 
   function renderTasks(tasksList) {
@@ -195,14 +221,23 @@ export default function Tasks() {
         <PageTitle>Tarefas</PageTitle>
       </PageHeader>
       <FilterContainer>
-        <Input
-          placeholder="Buscar tarefa"
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-        />
-        <Select>
-          <option value="">Filtrar</option>
-        </Select>
+        <FilterColumn>
+          <Input.Label>Pesquisar</Input.Label>
+          <Input
+            placeholder="Buscar tarefa"
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+          />
+        </FilterColumn>
+        <FilterColumn>
+          <Input.Label>Filtrar data</Input.Label>
+          <Input
+            placeholder="Filtrar data"
+            value={dateFilter}
+            onChange={(event) => setDateFilter(event.target.value)}
+            type="date"
+          />
+        </FilterColumn>
       </FilterContainer>
       <Table>
         <Table.Row>
@@ -212,7 +247,7 @@ export default function Tasks() {
           <Table.Head>Data de conclusão</Table.Head>
           <Table.Head width="10%">Ações</Table.Head>
         </Table.Row>
-        {renderTasks(search ? searchTasks() : tasks)}
+        {renderTasks(filterTasks(tasks))}
       </Table>
       <TaskModal
         isOpen={isTaskModalOpen}
