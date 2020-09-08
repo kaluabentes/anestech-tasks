@@ -19,10 +19,10 @@ A fullstack application to manage time spent on tasks.
 ### Available commands
 
 - Run `yarn dev:server` to start backend development server
-- Run `yarn dev:client` to start frontend development server
-- Run `yarn start:server` to start backend production server
-- Run `yarn build:client` to build a frontend release
+- Run `yarn dev` to start frontend development server
+- Run `yarn build` to build a frontend release
+- Run `yarn start` to start backend production server
 
 ## API Documentation
 
-Download or import directly into Insomnia the following file [API Doc](https://github.com/kaluabentes)
+Download or import directly into Insomnia the following file [API Doc](https://raw.githubusercontent.com/kaluabentes/react-tasks/master/insomnia.json)
