@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 
 import Sidenav from "../../components/Sidenav";
-import { Container, Main } from "./styles";
+import { Container, Main, MainContainer } from "./styles";
 import { useUser } from "../../contexts/user";
 import { useHistory } from "react-router-dom";
 
@@ -46,7 +46,9 @@ export default function AppLayout({ children }) {
   return (
     <Container>
       <Sidenav links={LINKS} onLogout={logout} />
-      <Main>{children}</Main>
+      <MainContainer>
+        <Main>{children}</Main>
+      </MainContainer>
     </Container>
   );
 }
