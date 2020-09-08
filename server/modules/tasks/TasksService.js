@@ -24,8 +24,6 @@ class TasksService {
       throw new Error(error.message);
     }
 
-    console.log(body.startDate);
-
     return Task.create({
       description: body.description,
       user: body.user,
