@@ -11,6 +11,7 @@ import { useUser } from "../contexts/user";
 import Button from "../components/Button";
 import UserModal from "../components/UserModal";
 import { useNotification } from "../contexts/notification";
+import EmptyState from "../components/EmptyState";
 
 export default function Users() {
   const [users, setUsers] = useState([]);
@@ -31,7 +32,7 @@ export default function Users() {
   async function fetchUsers() {
     try {
       const { data } = await usersApi.getAll();
-      setUsers(data);
+      setUsers(data.filter((usr) => usr.email !== user.email));
     } catch (error) {
       console.log(error.message);
     }
@@ -66,7 +67,7 @@ export default function Users() {
         isOpen: true,
       });
     } catch (error) {
-      if (error.response.data) {
+      if (error.response) {
         dispatchNotification({
           message: error.response.data.message,
           isOpen: true,
@@ -106,7 +107,7 @@ export default function Users() {
       setCurrentUser(undefined);
       setIsUserModalOpen(false);
     } catch (error) {
-      if (error.response.data) {
+      if (error.response) {
         dispatchNotification({
           message: error.response.data.message,
           isOpen: true,
@@ -146,30 +147,37 @@ export default function Users() {
       >
         <PageTitle>Users</PageTitle>
       </PageHeader>
-      <Table>
-        <thead>
-          <Table.Row>
-            <Table.Head>Name</Table.Head>
-            <Table.Head>Email</Table.Head>
-            <Table.Head width="10%">Ações</Table.Head>
-          </Table.Row>
-        </thead>
-        <tbody>
-          {users.map((user) => (
-            <Table.Row key={user._id}>
-              <Table.Data>{user.name}</Table.Data>
-              <Table.Data>{user.email}</Table.Data>
-              <Table.Data>
-                <ActionButton icon="edit" onClick={() => editUser(user._id)} />
-                <ActionButton
-                  icon="delete"
-                  onClick={() => deleteUser(user._id)}
-                />
-              </Table.Data>
+      {!users.length ? (
+        <EmptyState>Não há usuário por aqui :(</EmptyState>
+      ) : (
+        <Table>
+          <thead>
+            <Table.Row>
+              <Table.Head>Name</Table.Head>
+              <Table.Head>Email</Table.Head>
+              <Table.Head width="10%">Ações</Table.Head>
             </Table.Row>
-          ))}
-        </tbody>
-      </Table>
+          </thead>
+          <tbody>
+            {users.map((user) => (
+              <Table.Row key={user._id}>
+                <Table.Data>{user.name}</Table.Data>
+                <Table.Data>{user.email}</Table.Data>
+                <Table.Data>
+                  <ActionButton
+                    icon="edit"
+                    onClick={() => editUser(user._id)}
+                  />
+                  <ActionButton
+                    icon="delete"
+                    onClick={() => deleteUser(user._id)}
+                  />
+                </Table.Data>
+              </Table.Row>
+            ))}
+          </tbody>
+        </Table>
+      )}
       <UserModal
         isOpen={isUserModalOpen}
         isLoading={isSaving}
