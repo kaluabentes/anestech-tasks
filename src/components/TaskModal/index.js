@@ -48,7 +48,13 @@ export default function TaskModal({
 
   useEffect(() => {
     if (initialTask) {
-      setTask(initialTask);
+      setTask({
+        ...initialTask,
+        startDate: formatDateTimeInput(initialTask.startDate),
+        endDate: initialTask.endDate
+          ? formatDateTimeInput(initialTask.startDate)
+          : "",
+      });
     } else {
       setTask(INITIAL_STATE);
     }
@@ -115,7 +121,7 @@ export default function TaskModal({
           placeholder="Data de início"
           name="startDate"
           type="datetime-local"
-          value={task.startDate ? formatDateTimeInput(task.startDate) : ""}
+          value={task.startDate}
           onChange={handleChange}
           required
           margin="0 0 20px 0"
@@ -126,7 +132,7 @@ export default function TaskModal({
           placeholder="Data de conclusão"
           name="endDate"
           type="datetime-local"
-          value={task.endDate ? formatDateTimeInput(task.endDate) : ""}
+          value={task.endDate}
           onChange={handleChange}
           margin="0 0 20px 0"
         />
