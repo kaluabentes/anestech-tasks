@@ -10,6 +10,7 @@ export default css`
   outline: none;
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 4px;
+  height: 46px;
 
   &:focus {
     border-color: transparent;
