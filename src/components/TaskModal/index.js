@@ -104,7 +104,9 @@ export default function TaskModal({
         >
           <option value="">Selecione</option>
           {users.map((user) => (
-            <option value={user._id}>{user.name}</option>
+            <option key={user._id} value={user._id}>
+              {user.name}
+            </option>
           ))}
         </Select>
         <Input.Label htmlFor="startDate">Data de início</Input.Label>

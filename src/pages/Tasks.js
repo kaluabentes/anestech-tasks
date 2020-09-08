@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 import AppLayout from "../layouts/AppLayout";
 import PageTitle from "../components/PageTitle";
@@ -13,7 +13,6 @@ import TaskModal from "../components/TaskModal";
 import PageHeader from "../components/PageHeader";
 import Button from "../components/Button";
 import Input from "../components/Input";
-import Select from "../components/Select";
 import styled from "styled-components";
 
 const FilterContainer = styled.div`
@@ -187,7 +186,7 @@ export default function Tasks() {
 
   function renderTasks(tasksList) {
     return tasksList.map((task) => (
-      <Table.Row>
+      <Table.Row key={task._id}>
         <Table.Data>{task.description}</Table.Data>
         <Table.Data>{task.user.name}</Table.Data>
         <Table.Data>{formatDate(task.startDate)}</Table.Data>
@@ -240,14 +239,16 @@ export default function Tasks() {
         </FilterColumn>
       </FilterContainer>
       <Table>
-        <Table.Row>
-          <Table.Head>Descrição</Table.Head>
-          <Table.Head>Usuário</Table.Head>
-          <Table.Head>Data de início</Table.Head>
-          <Table.Head>Data de conclusão</Table.Head>
-          <Table.Head width="10%">Ações</Table.Head>
-        </Table.Row>
-        {renderTasks(filterTasks(tasks))}
+        <thead>
+          <Table.Row>
+            <Table.Head>Descrição</Table.Head>
+            <Table.Head>Usuário</Table.Head>
+            <Table.Head>Data de início</Table.Head>
+            <Table.Head>Data de conclusão</Table.Head>
+            <Table.Head width="10%">Ações</Table.Head>
+          </Table.Row>
+        </thead>
+        <tbody>{renderTasks(filterTasks(tasks))}</tbody>
       </Table>
       <TaskModal
         isOpen={isTaskModalOpen}

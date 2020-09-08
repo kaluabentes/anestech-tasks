@@ -11,7 +11,6 @@ import logo from "../../images/logo.svg";
 import { useHistory } from "react-router-dom";
 
 const propTypes = {
-  error: PropTypes.string.isRequired,
   onSubmit: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
 };

@@ -23,7 +23,11 @@ export default function Sidenav({ links, onLogout }) {
       <Logo src={logo} alt="React Tasks" />
       <Links>
         {links.map((link) => (
-          <Button type="button" onClick={() => history.push(link.path)}>
+          <Button
+            key={link.path}
+            type="button"
+            onClick={() => history.push(link.path)}
+          >
             <Icon>{link.icon}</Icon>
           </Button>
         ))}

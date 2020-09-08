@@ -1,5 +1,5 @@
 import React from "react";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 import AppLayout from "../layouts/AppLayout";
 import PageTitle from "../components/PageTitle";
@@ -21,6 +21,7 @@ export default function Home() {
           .filter((task) => !task.endDate)
           .map((task) => (
             <TaskCard
+              key={task._id}
               description={task.description}
               startDate={`Iniciada em ${formatDate(task.startDate)}`}
               user={`Por ${task.user.name}`}

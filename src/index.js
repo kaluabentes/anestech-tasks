@@ -5,16 +5,19 @@ import * as serviceWorker from "./serviceWorker";
 import { UserProvider } from "./contexts/user";
 import { NotificationProvider } from "./contexts/notification";
 import { BrowserRouter } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
 
 ReactDOM.render(
   <React.StrictMode>
-    <NotificationProvider>
-      <UserProvider>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </UserProvider>
-    </NotificationProvider>
+    <HelmetProvider>
+      <NotificationProvider>
+        <UserProvider>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </UserProvider>
+      </NotificationProvider>
+    </HelmetProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

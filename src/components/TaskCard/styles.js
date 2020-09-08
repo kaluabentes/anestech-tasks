@@ -1,7 +1,6 @@
 import styled, { css } from "styled-components";
 
 import card from "../../styles/components/card";
-import { COLOR_WILD_SAND } from "../../styles/colors";
 
 export const Card = styled.div`
   ${card}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet-async";
 
 import AppLayout from "../layouts/AppLayout";
 import PageTitle from "../components/PageTitle";
@@ -147,24 +147,28 @@ export default function Users() {
         <PageTitle>Users</PageTitle>
       </PageHeader>
       <Table>
-        <Table.Row>
-          <Table.Head>Name</Table.Head>
-          <Table.Head>Email</Table.Head>
-          <Table.Head width="10%">Ações</Table.Head>
-        </Table.Row>
-        {users.map((user) => (
+        <thead>
           <Table.Row>
-            <Table.Data>{user.name}</Table.Data>
-            <Table.Data>{user.email}</Table.Data>
-            <Table.Data>
-              <ActionButton icon="edit" onClick={() => editUser(user._id)} />
-              <ActionButton
-                icon="delete"
-                onClick={() => deleteUser(user._id)}
-              />
-            </Table.Data>
+            <Table.Head>Name</Table.Head>
+            <Table.Head>Email</Table.Head>
+            <Table.Head width="10%">Ações</Table.Head>
           </Table.Row>
-        ))}
+        </thead>
+        <tbody>
+          {users.map((user) => (
+            <Table.Row key={user._id}>
+              <Table.Data>{user.name}</Table.Data>
+              <Table.Data>{user.email}</Table.Data>
+              <Table.Data>
+                <ActionButton icon="edit" onClick={() => editUser(user._id)} />
+                <ActionButton
+                  icon="delete"
+                  onClick={() => deleteUser(user._id)}
+                />
+              </Table.Data>
+            </Table.Row>
+          ))}
+        </tbody>
       </Table>
       <UserModal
         isOpen={isUserModalOpen}
