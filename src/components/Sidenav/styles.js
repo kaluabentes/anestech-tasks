@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import { COLOR_SHARK } from "../../styles/colors";
 import BaseIcon from "../Icon";
@@ -7,7 +7,7 @@ export const Nav = styled.nav`
   background: ${COLOR_SHARK};
   height: 100vh;
   width: 64px;
-  padding: 10px 0 0 0;
+  padding: 10px 0;
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -32,6 +32,18 @@ export const Button = styled.button`
   display: flex;
   align-items: center;
   justify-content: center;
+  opacity: 0.5;
+  transition: 0.3s;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  ${(props) =>
+    props.isActive &&
+    css`
+      opacity: 1;
+    `}
 `;
 
 export const Icon = styled(BaseIcon)`

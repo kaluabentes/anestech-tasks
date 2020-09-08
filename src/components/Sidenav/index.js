@@ -27,6 +27,7 @@ export default function Sidenav({ links, onLogout }) {
             key={link.path}
             type="button"
             onClick={() => history.push(link.path)}
+            isActive={history.location.pathname === link.path}
           >
             <Icon>{link.icon}</Icon>
           </Button>
