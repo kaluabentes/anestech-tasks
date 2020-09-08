@@ -12,6 +12,20 @@ import formatDate from "../utils/formatDate";
 import TaskModal from "../components/TaskModal";
 import PageHeader from "../components/PageHeader";
 import Button from "../components/Button";
+import Input from "../components/Input";
+import Select from "../components/Select";
+import styled from "styled-components";
+
+const FilterContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+
+  & input,
+  & select {
+    width: 20%;
+  }
+`;
 
 export default function Tasks() {
   const [user] = useUser();
@@ -21,6 +35,7 @@ export default function Tasks() {
   const [isTaskModalOpen, setIsTaskModalOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [currentTask, setCurrentTask] = useState(undefined);
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     if (user.ready) {
@@ -137,10 +152,34 @@ export default function Tasks() {
     }
   }
 
+  function searchTasks() {
+    return tasks.filter((task) => {
+      const regex = new RegExp(search, "i");
+      return regex.test(task.description);
+    });
+  }
+
+  function renderTasks(tasksList) {
+    return tasksList.map((task) => (
+      <Table.Row>
+        <Table.Data>{task.description}</Table.Data>
+        <Table.Data>{task.user.name}</Table.Data>
+        <Table.Data>{formatDate(task.startDate)}</Table.Data>
+        <Table.Data>
+          {task.endDate ? formatDate(task.endDate) : null}
+        </Table.Data>
+        <Table.Data>
+          <ActionButton icon="edit" onClick={() => editTask(task._id)} />
+          <ActionButton icon="delete" onClick={() => deleteTask(task._id)} />
+        </Table.Data>
+      </Table.Row>
+    ));
+  }
+
   return (
     <AppLayout>
       <Helmet>
-        <title>Tasks - React Tasks</title>
+        <title>Tarefas - React Tasks</title>
       </Helmet>
       <PageHeader
         actions={
@@ -153,8 +192,18 @@ export default function Tasks() {
           </Button>
         }
       >
-        <PageTitle>Tasks</PageTitle>
+        <PageTitle>Tarefas</PageTitle>
       </PageHeader>
+      <FilterContainer>
+        <Input
+          placeholder="Buscar tarefa"
+          value={search}
+          onChange={(event) => setSearch(event.target.value)}
+        />
+        <Select>
+          <option value="">Filtrar</option>
+        </Select>
+      </FilterContainer>
       <Table>
         <Table.Row>
           <Table.Head>Descrição</Table.Head>
@@ -163,23 +212,7 @@ export default function Tasks() {
           <Table.Head>Data de conclusão</Table.Head>
           <Table.Head width="10%">Ações</Table.Head>
         </Table.Row>
-        {tasks.map((task) => (
-          <Table.Row>
-            <Table.Data>{task.description}</Table.Data>
-            <Table.Data>{task.user.name}</Table.Data>
-            <Table.Data>{formatDate(task.startDate)}</Table.Data>
-            <Table.Data>
-              {task.endDate ? formatDate(task.endDate) : null}
-            </Table.Data>
-            <Table.Data>
-              <ActionButton icon="edit" onClick={() => editTask(task._id)} />
-              <ActionButton
-                icon="delete"
-                onClick={() => deleteTask(task._id)}
-              />
-            </Table.Data>
-          </Table.Row>
-        ))}
+        {renderTasks(search ? searchTasks() : tasks)}
       </Table>
       <TaskModal
         isOpen={isTaskModalOpen}
